@@ -30,9 +30,11 @@ function sqlAllBikesByPrice(): string
 function sqlAllOpenRentals(): string
 {
     return "
-    SELECT rental_id, bike_id, customer_id, start_time, total_cost
-    FROM rentals
-    WHERE end_time = 'NULL'
+    SELECT r.rental_id, b.model, c.first_name, c.last_name, r.start_time
+    FROM rentals r
+    JOIN bikes b ON r.bike_id = b.bike_id
+    JOIN customers c ON r.customer_id = c.customer_id
+    WHERE r.end_time IS NULL
     ";
 }
 
@@ -49,7 +51,7 @@ function sqlJoinRentalsCustomers(): string
 function sqlTop3Bikes(): string
 {
     return "
-    SELECT bike_id, model, type, hourly rate
+    SELECT bike_id, model, type, hourly_rate
     FROM bikes
     ORDER BY hourly_rate DESC
     LIMIT 3
@@ -83,5 +85,18 @@ function sqlUpdateBikeUnavailable(): string
     UPDATE bikes
     SET available = 0
     WHERE bike_id = 4
+    ";
+}
+
+function sqlCompletedRentals(): string
+{
+    return "
+    SELECT b.model, c.first_name, c.last_name, r.start_time, r.end_time
+    FROM rentals r
+    JOIN bikes b
+        ON r.bike_id = b.bike_id
+    JOIN customers c
+        ON r.customer_id = c.customer_id
+    WHERE r.end_time IS NOT NULL
     ";
 }

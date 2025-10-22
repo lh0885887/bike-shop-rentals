@@ -4,6 +4,12 @@ require 'functions.php';
 require 'database.php';
 
 
+$pdo = db(); //establish db connection
+
+$sql = sqlAllCustomers(); // assign sql string
+
+$result = $pdo->query($sql);
+
 // SQL STATEMENTS
 echo "<h3 style='padding-left: 25px;'>sqlAllCustomers</h3>";
 $sql = sqlAllCustomers();
